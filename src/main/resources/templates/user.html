@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="ru">
+<head>
+    <title Страница пользователя></title>
+</head>
+<body>
+<form action="/user">
+<div align="center">
+    <h2> Страница пользователя </h2>
+</div>
+    <p>
+<div align="center">
+    <table border="0" cellpadding="5">
+    <tr>
+        <td align="right"><b>ID: </b></td>
+        <td th:text="${user.id}"></td>
+    </tr>
+    <p>
+    <tr>
+        <td align="right"><b>Логин: </b></td>
+        <td th:text="*{user.username}"></td>
+    </tr>
+    <p>
+    <tr>
+        <td align="right"><b>Имя: </b></td>
+        <td th:text="*{user.firstName}"></td>
+    </tr>
+    <p>
+    <tr>
+        <td align="right"><b>Фамилия: </b></td>
+        <td th:text="*{user.lastName}"></td>
+    </tr>
+    <p>
+    <tr>
+        <td align="right"><b>Email: </b></td>
+        <td th:text="*{user.email}"></td>
+    </tr>
+    </table>
+    <p>
+    <p>
+    <div align="center">
+        <div th:if="${user.getUsername().equals('admin')}">
+            <a href="#" th:href="@{/admin}">Страница админа</a>
+        </div>
+        <a href="#" th:href="@{/logout}">Выход</a>
+    </div>
+</div>
+</form>
+</body>
+</html>

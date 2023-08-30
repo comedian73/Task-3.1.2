@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Изменение пользователя</title>
+</head>
+<body>
+<div align="center">
+    <h2>Изменение пользователя</h2>
+    <form th:action="@{/admin/edit}" th:object="${user}" method="post">
+        <table border="0" cellpadding="5">
+            <tr>
+                <td>ID: </td>
+                <td th:text="*{id}"></td>
+                <input type="hidden" th:field="*{id}">
+            </tr>
+            <tr>
+                <td>Имя: </td>
+                <td>
+                    <label>
+                        <input type="hidden" th:field="*{username}">
+                        <input type="text" name="name" th:field="*{firstName}" >
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Фамилия: </td>
+                <td>
+                    <label>
+                        <input type="text" name="last_name" th:field="*{lastName}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Email: </td>
+                <td>
+                    <label>
+                        <input type="text" name="email" th:field="*{email}">
+                    </label>
+                    <th:block th:if="${#fields.hasErrors('email')}">
+                        <div style="color : red"  th:errors="*{email}">invalid</div>
+                    </th:block>
+                </td>
+            </tr>
+            <tr>
+                <td>Пароль: </td>
+                <td>
+                    <label>
+                        <input type="text" name="password" th:field="*{password}" onclick="this.value=''">
+                    </label>
+                    <th:block th:if="${#fields.hasErrors('password')}">
+                        <div style="color : red" th:errors="*{password}">invalid</div>
+                    </th:block>
+                </td>
+            </tr>
+            <tr>
+                <td>Роль: </td>
+                <td>
+                    <select size="2" multiple name="roles" th:field="*{roles}" >
+                        <option th:each="lst : ${listRole}" th:value="${lst.id}" th:text="${lst.name}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5"><input type="submit" value="Сохранить"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>
