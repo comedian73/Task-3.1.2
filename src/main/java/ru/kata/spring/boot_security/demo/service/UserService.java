@@ -1,6 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,25 +13,22 @@ import ru.kata.spring.boot_security.demo.repo.UserRepository;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
+@RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
-    public UserService() {}
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     private void preLoad() {
         roleRepository.save(new Role(1L, "ROLE_ADMIN"));
         roleRepository.save(new Role(2L, "ROLE_USER"));
-        saveUser(new User("admin", "admin", "admin", "admin@mail.ru", "admin", new HashSet<>(roleRepository.findAll())));
-        saveUser(new User("user", "user", "user", "user@mail.ru", "user", new HashSet<>(Collections.singleton(roleRepository.getById(2L)))));
+        saveUser(new User(1L, "admin", "admin", "admin@mail.ru", "admin", "admin", new HashSet<>(roleRepository.findAll())));
+        saveUser(new User(2L, "user", "user", "user@mail.ru", "user", "user", new HashSet<>(Collections.singleton(roleRepository.getById(2L)))));
     }
 
     @Override

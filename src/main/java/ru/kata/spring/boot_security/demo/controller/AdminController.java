@@ -1,36 +1,35 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.model.User;
 import javax.validation.Valid;
 
 @Controller
+@RequiredArgsConstructor
+@RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping(value = "/admin")
+    @GetMapping
     public String userList( Model model) {
         model.addAttribute("list", userService.getAllUsers());
         return "admin";
     }
 
-    @PostMapping (value = "/admin/delete")
+    @PostMapping (value = "/delete")
     public String deleteUser(@RequestParam(name = "del") long id) {
         userService.delete(id);
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/admin/edit")
+    @GetMapping(value = "/edit")
     public String edit (@RequestParam(name = "edit") String username, Model model) {
         User user = (User) userService.loadUserByUsername(username);
         model.addAttribute("user", user);
@@ -38,7 +37,7 @@ public class AdminController {
         return "edit";
     }
 
-    @PostMapping(value = "/admin/edit")
+    @PostMapping(value = "/edit")
     public String saveEdit (@ModelAttribute("user") @Valid User user, BindingResult result) {
         if (result.hasErrors()) {
             return "edit";
@@ -47,14 +46,14 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/admin/addUser")
+    @GetMapping(value = "/addUser")
     public String addUser(Model model) {
         model.addAttribute("listRole", userService.getAllRoles());
         model.addAttribute("user", new User());
         return "addUser";
     }
 
-    @PostMapping(value = "/admin/addUser")
+    @PostMapping(value = "/addUser")
     public String saveAddUser(@ModelAttribute("user") @Valid User user, BindingResult result) {
         if (result.hasErrors()) {
             return "edit";
